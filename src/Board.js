@@ -79,12 +79,35 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      //find the row with a given index
+      var row = this.get(rowIndex);
+      //set a conflicts var
+      var conflicts = 0;
+      //iterate over the row array
+      for (var i = 0; i < row.length; i++) {
+        //increment the counter with row[i] value
+        conflicts += row[i];
+        //check if counter has a value over 1
+        if (conflicts > 1) {
+          //if yes then return true
+          return true;
+        }
+      }
+      return false;
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      //find a length
+      var length = this.get('n');
+      //iterate over the rows
+      for (var i = 0; i < length; i++) {
+        //run the hasRowConflictAt function and pass in i
+        if (this.hasRowConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     },
 
 
@@ -94,12 +117,36 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      //get the length of n
+      var cols = this.get('n');
+      //create conflicts variable
+      var conflicts = 0;
+      //iterate over rows
+      for (var i = 0; i < cols; i++) {
+        //add the col val of row to conflicts
+        conflicts += this.get(i)[colIndex];
+        //check for conflicts
+        if (conflicts > 1) {
+          //if yes then return true;
+          return true;
+        }
+      }
+      //else return false
+      return false;
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      //get the n amount
+      var cols  = this.get('n');
+      //iterate over the rows
+      for (var i = 0; i < cols; i++) {
+        //on each row value run the hasColConflictAt
+        if (this.hasColConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     },
 
 
@@ -109,12 +156,37 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+
+      var colIndex = majorDiagonalColumnIndexAtFirstRow;
+      var rowIndex = 0;
+      var size = this.get('n');
+      var conflicts = 0;
+
+      for (; colIndex < size && rowIndex < size; rowIndex++, colIndex++) {
+        if (colIndex >= 0) {
+          var row = this.get(rowIndex);
+          conflicts += row[colIndex];
+          if (conflicts > 1) {
+            return true;
+          }
+        }
+      }
+      return false;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      //get the size of the board
+      var size = this.get('n');
+      // //iterate throught the diagonals
+      for (var i = 1 - size; i < size; i++) {
+        //check if previous func returns true on i
+        if (this.hasMajorDiagonalConflictAt(i)) {
+          return true;
+        }
+      }
+      // return false;
+      return false;
     },
 
 
@@ -124,12 +196,40 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      //find the length of the board
+      var length = this.get('n');
+      //set row index to 0
+      var rowIndex = 0;
+      //set col index to minorDiagonalColumnIndexAtFirstRow
+      var colIndex = minorDiagonalColumnIndexAtFirstRow;
+      //set counter to 0
+      var piecesCounter = 0;
+      //iterate until colIndex is bigger than 0
+      for (; colIndex >= 0 && rowIndex < length; rowIndex++, colIndex--) {
+        //check if colIndex is less than length
+        if (colIndex < length) {
+          //add value of square to counter
+          piecesCounter += this.get(rowIndex)[colIndex];
+          //check if counter is bigger than one
+          if (piecesCounter > 1) {
+            //if yes then return true
+            return true;
+          }
+        }
+      }
+      //otherwise return false
+      return false;
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      var size = this.get('n');
+      for (var i = 0; i < (size - 1) * 2; i++) {
+        if (this.hasMinorDiagonalConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
